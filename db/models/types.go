@@ -6,8 +6,11 @@ type REstate struct {
 	gorm.Model
 	Header      string
 	Description string
-	OwnerName   string
-	OwnerPhone  string
+	Name        string
+	Phone       string
+	Price       int64
+	Type        uint
+	Rooms       string
 	CreatorId   uint
 }
 
@@ -16,4 +19,9 @@ type User struct {
 	Name string
 	Mail string
 	Pass string
+}
+
+type Types struct {
+	gorm.Model
+	Name string
 }

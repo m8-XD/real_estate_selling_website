@@ -1,6 +1,12 @@
-registration
-login
-post creation
+(+)registration
+(+)post creation
+    - post validation
 all post view page(pagination + filtration)
 single post view page
 post edit popup
+
+
+no login i dont have time for this
+
+when creating u will be require to enter mail and password
+when deleting u will be required to enter mail and password
