@@ -2,6 +2,7 @@ package api
 
 import (
 	"net/http"
+	m "net/mail"
 
 	"github.com/a-h/templ"
 	"github.com/m8-XD/real_estate_selling_website/db/models"
@@ -34,6 +35,13 @@ func CreateUser(rw http.ResponseWriter, r *http.Request) {
 	ok := repository.IsValidMail(mail)
 	if !ok {
 		logging.Info("someone trying to register existing email")
+		templ.Handler(t.CheckMail(mail, name)).ServeHTTP(rw, r)
+		return
+	}
+
+	_, err = m.ParseAddress(mail)
+	if err != nil {
+		logging.Error("user entered invalid mail")
 		templ.Handler(t.CheckMail(mail, name)).ServeHTTP(rw, r)
 		return
 	}

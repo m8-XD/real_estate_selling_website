@@ -64,7 +64,7 @@ func ValidatePostCreation(data models.REstate, mail string, ok bool) templ.Compo
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" required> <input type=\"number\" id=\"price\" name=\"price\" placeholder=\"Price\" value=\"")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" required> <input type=\"number\" id=\"price\" name=\"price\" placeholder=\"Price\" min=\"0\" value=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -104,7 +104,7 @@ func ValidatePostCreation(data models.REstate, mail string, ok bool) templ.Compo
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"></textarea></div><input type=\"submit\" value=\"Submit\" id=\"input-submit\"></form>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"></textarea></div><input type=\"submit\" value=\"Submit\" id=\"input-submit\"></form><script>\n  maskPhone();\n</script>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -128,7 +128,7 @@ func PostCreationForm() templ.Component {
 			templ_7745c5c3_Var2 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<form class=\"cf\" hx-post=\"/api/v1/post/create\" hx-swap=\"outerHTML\"><div class=\"half left cf\"><input type=\"text\" id=\"header\" name=\"header\" placeholder=\"Header\" required> <input type=\"text\" id=\"name\" name=\"name\" placeholder=\"Name\" required> <input type=\"tel\" id=\"phone\" name=\"phone\" placeholder=\"Phone\" required> <input type=\"number\" id=\"price\" name=\"price\" placeholder=\"Price\" required> <select name=\"type\" id=\"type\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<form class=\"cf\" hx-post=\"/api/v1/post/create\" hx-swap=\"outerHTML\"><div class=\"half left cf\"><input type=\"text\" id=\"header\" name=\"header\" placeholder=\"Header\" required> <input type=\"text\" id=\"name\" name=\"name\" placeholder=\"Name\" required> <input type=\"tel\" id=\"phone\" name=\"phone\" placeholder=\"Phone\" required> <input type=\"number\" id=\"price\" name=\"price\" placeholder=\"Price\" min=\"0\" required> <select name=\"type\" id=\"type\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -136,7 +136,7 @@ func PostCreationForm() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</select> <select name=\"rooms\" id=\"rooms\"><option value=\"1\">1</option> <option value=\"2\">2</option> <option value=\"3\">3</option> <option value=\"4\">4</option> <option value=\"5+\">5+</option></select> <input type=\"email\" id=\"email\" name=\"email\" placeholder=\"Email address\" required> <input type=\"password\" id=\"pass\" name=\"pass\" placeholder=\"Password\" required></div><div class=\"half right cf\"><textarea name=\"desc\" id=\"input-message\" placeholder=\"Message\"></textarea></div><input type=\"submit\" value=\"Submit\" id=\"input-submit\"></form>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</select> <select name=\"rooms\" id=\"rooms\"><option value=\"1\">1</option> <option value=\"2\">2</option> <option value=\"3\">3</option> <option value=\"4\">4</option> <option value=\"5+\">5+</option></select> <input type=\"email\" id=\"email\" name=\"email\" placeholder=\"Email address\" required> <input type=\"password\" id=\"pass\" name=\"pass\" placeholder=\"Password\" required></div><div class=\"half right cf\"><textarea name=\"desc\" id=\"input-message\" placeholder=\"Message\"></textarea></div><input type=\"submit\" value=\"Submit\" id=\"input-submit\"></form><script>\n  maskPhone();\n</script>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -177,7 +177,7 @@ func HouseTypes(selected string) templ.Component {
 				var templ_7745c5c3_Var4 string
 				templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(item)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `create_post.templ`, Line: 73, Col: 44}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `create_post.templ`, Line: 79, Col: 44}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 				if templ_7745c5c3_Err != nil {
@@ -203,7 +203,7 @@ func HouseTypes(selected string) templ.Component {
 				var templ_7745c5c3_Var5 string
 				templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(item)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `create_post.templ`, Line: 75, Col: 35}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `create_post.templ`, Line: 81, Col: 35}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 				if templ_7745c5c3_Err != nil {
@@ -252,7 +252,7 @@ func RoomsSelect(selected string) templ.Component {
 				var templ_7745c5c3_Var7 string
 				templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprint(item))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `create_post.templ`, Line: 83, Col: 68}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `create_post.templ`, Line: 89, Col: 68}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 				if templ_7745c5c3_Err != nil {
@@ -278,7 +278,7 @@ func RoomsSelect(selected string) templ.Component {
 				var templ_7745c5c3_Var8 string
 				templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprint(item))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `create_post.templ`, Line: 85, Col: 59}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `create_post.templ`, Line: 91, Col: 59}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 				if templ_7745c5c3_Err != nil {

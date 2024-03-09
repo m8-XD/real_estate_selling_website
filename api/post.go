@@ -1,6 +1,7 @@
 package api
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -47,6 +48,13 @@ func CreatePost(w http.ResponseWriter, r *http.Request) {
 		Type:        hType,
 	}
 
+	ok := post.Validate()
+	if !ok {
+		logging.Info("user entered wrong something")
+		templ.Handler(temp.ValidatePostCreation(post, mail, false)).ServeHTTP(w, r)
+		return
+	}
+
 	logging.Info("%v", post)
 
 	ok, id := repository.GetId(mail, pass)
@@ -58,13 +66,16 @@ func CreatePost(w http.ResponseWriter, r *http.Request) {
 
 	post.CreatorId = id
 
-	// postId, err = repository.CreatePost(&post)
+	postId, err := repository.CreatePost(&post)
 	if err != nil {
 		logging.Error("there was an error creating the post")
 		logging.Error(err.Error())
 		w.Header().Add("HX-Redirect", "/error?code=5xx")
 	}
 	logging.Info("creating post %v", post)
-	// http.Redirect(w, r, fmt.Sprintf("/post/%d", postId), http.StatusFound)
-	w.Header().Add("HX-Redirect", "/error?code=fix_code_you_bastard")
+	w.Header().Add("HX-Redirect", fmt.Sprintf("/post/%d", postId))
+}
+
+func AllPosts(w http.ResponseWriter, r *http.Request) {
+	panic("sdasdfasfasdf")
 }

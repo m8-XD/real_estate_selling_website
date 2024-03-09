@@ -40,6 +40,9 @@ func main() {
 	mux.HandleFunc("/post/create/create.css", func(rw http.ResponseWriter, r *http.Request) {
 		http.ServeFile(rw, r, "./static/post/create.css")
 	})
+	mux.HandleFunc("/post/all", func(rw http.ResponseWriter, r *http.Request) {
+		http.ServeFile(rw, r, "./static/post/all.html")
+	})
 
 	mux.HandleFunc("POST /api/v1/user/email", api.ValidateEmail)
 	// mux.HandleFunc("POST /api/v1/user/delete/{id}")

@@ -4,13 +4,16 @@
 </head>
 <h1>Create post</h1>
 <div hx-get="/api/v1/post/form" hx-trigger="every 1s" hx-swap="outerHTML">
-<!-- in case the form didn't loaded --> 
 </div>
 <script src="https://unpkg.com/imask"></script>
 <script>
- 
-const phoneJs = document.getElementById("phone");
-const phoneMask = new IMask(phoneJs, {
-    mask: "+{375}(00)000-00-00",
-});
+async function maskPhone() {
+    var phoneJs = null; 
+    while (phoneJs == null) {
+        phoneJs = document.getElementById("phone");
+    }
+    const phoneMask = new IMask(phoneJs, {
+        mask: "+{375}(00)000-00-00",
+    });
+}
 </script>

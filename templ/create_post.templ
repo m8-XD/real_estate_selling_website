@@ -5,7 +5,6 @@ import (
   "github.com/m8-XD/real_estate_selling_website/db/repository"
   "github.com/m8-XD/real_estate_selling_website/db/models"
 	"strings"
-	"github.com/m8-XD/real_estate_selling_website/logging"
 )
 
 templ ValidatePostCreation(data models.REstate, mail string, ok bool) {
@@ -19,7 +18,7 @@ if !ok {
     <input type="text" id="header" name="header" placeholder="Header" value={ data.Header } required/>
     <input type="text" id="name" name="name" placeholder="Name" value={ data.Name } required/>
     <input type="tel" id="phone" name="phone" placeholder="Phone" value={ data.Phone } required/>
-    <input type="number" id="price" name="price" placeholder="Price" value={ fmt.Sprint(data.Price) } required/>
+    <input type="number" id="price" name="price" placeholder="Price" min="0" value={ fmt.Sprint(data.Price) } required/>
     <select name="type" id="type">
     @HouseTypes(data.Rooms)
     </select>
@@ -39,6 +38,9 @@ if !ok {
   </div>  
   <input type="submit" value="Submit" id="input-submit"/>
 </form>
+<script>
+  maskPhone();
+</script>
 
 }
 
@@ -48,7 +50,7 @@ templ PostCreationForm() {
     <input type="text" id="header" name="header" placeholder="Header" required/>
     <input type="text" id="name" name="name" placeholder="Name" required/>
     <input type="tel" id="phone" name="phone" placeholder="Phone" required/>
-    <input type="number" id="price" name="price" placeholder="Price" required/>
+    <input type="number" id="price" name="price" placeholder="Price" min="0" required/>
     <select name="type" id="type">
     @HouseTypes("1")
     </select>
@@ -67,6 +69,9 @@ templ PostCreationForm() {
   </div>  
   <input type="submit" value="Submit" id="input-submit"/>
 </form>
+<script>
+  maskPhone();
+</script>
 }
 
 templ HouseTypes(selected string) {

@@ -26,4 +26,6 @@ CREATE TABLE users (
 CREATE TABLE types (
     id serial not null unique,
     name text not null unique,
-)
+);
+
+INSERT INTO types (name) VALUES ('Flat'), ('Bungalow'), ('Cottage'), ('Other');
