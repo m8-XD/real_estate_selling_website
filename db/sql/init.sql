@@ -9,7 +9,7 @@ CREATE TABLE post (
     phone TEXT NOT NULL,
     type INT NOT NULL,
     rooms TEXT NOT NULL,
-    creator_id UUID NOT NULL,
+    creator_id INT NOT NULL,
     created_at TIMESTAMP NOT NULL,
     updated_at TIMESTAMP,
     deleted_at TIMESTAMP);

@@ -1,0 +1,174 @@
+package temp
+
+import (
+	"fmt"
+	"github.com/m8-XD/real_estate_selling_website/db/repository"
+	"github.com/m8-XD/real_estate_selling_website/db/models"
+	"slices"
+)
+
+templ AllPosts(c []models.PostPreview, checked []string, hasNextPage bool, hasPrevPage bool) {
+	<div class="main" hx-target="this" hx-swap="outerHTML">
+		<div class="top-bar" bis_skin_checked="1">
+			<div class="container">
+				<form class="filter__wrapper" id="filter" hx-get="/api/v1/post/all" hx-vals="js:{page: getPage()}">
+					<details class="htype">
+						<summary>House type</summary>
+						<fieldset>
+							<legend>House Type</legend>
+							<ul>
+								@houseTypes(checked)
+							</ul>
+						</fieldset>
+					</details>
+					<details class="roomq">
+						<summary>Room quantity</summary>
+						<fieldset>
+							<legend>Room quantity</legend>
+							<ul>
+								@roomQuantity(checked)
+							</ul>
+						</fieldset>
+					</details>
+					<div>
+						<label class="word-sort" for="order">Sort:</label>
+						<select class="select_btn" name="order">
+							<option
+								name="priceDESC"
+								value="priceDESC"
+								if slices.Contains(checked, "priceDESC") {
+									selected
+								}
+							>Highest price</option>
+							<option
+								name="priceASC"
+								value="priceASC"
+								if slices.Contains(checked, "priceASC") {
+									selected
+								}
+							>Lowest price</option>
+							<option
+								name="recent"
+								value="recent"
+								if slices.Contains(checked, "recent") {
+									selected
+								}
+							>Most recent</option>
+						</select>
+					</div>
+					<button class="btn">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							xmlns:xlink="http://www.w3.org/1999/xlink"
+							viewBox="0 0 50 50"
+							width="100%"
+							height="100%"
+						>
+							<circle
+								fill="none"
+								stroke="#fff"
+								stroke-width="2"
+								stroke-linecap="round"
+								stroke-miterlimit="10"
+								cx="21"
+								cy="20"
+								r="16"
+							></circle>
+							<line
+								fill="none"
+								stroke="#fff"
+								stroke-width="4"
+								stroke-miterlimit="10"
+								x1="32.229"
+								y1="32.229"
+								x2="45.5"
+								y2="45.5"
+							></line>
+						</svg>
+					</button>
+				</form>
+			</div>
+		</div>
+		<div class="container">
+			<div class="content">
+				@content(c)
+			</div>
+			<div class="pagination-buttons-wrapper">
+				@prevBtn(hasNextPage)
+				@nextBtn(hasPrevPage)
+			</div>
+		</div>
+	</div>
+}
+
+templ houseTypes(checked []string) {
+	for _, hType := range repository.HouseTypes() {
+		<li>
+			<label for={ hType }>{ hType }</label>
+			<input
+				type="checkbox"
+				id={ hType }
+				name={ hType }
+				if slices.Contains(checked, hType) {
+					checked
+				}
+			/>
+		</li>
+	}
+}
+
+templ roomQuantity(checked []string) {
+	for i := 1; i <= 4; i++ {
+		<li>
+			<label for={ fmt.Sprint(i) }>{ fmt.Sprint(i) }</label>
+			<input
+				type="checkbox"
+				id={ fmt.Sprint(i) }
+				name={ fmt.Sprint(i) }
+				if slices.Contains(checked, fmt.Sprint(i)) {
+					checked
+				}
+			/>
+		</li>
+	}
+	<li>
+		<label for="5+">5+</label>
+		<input
+			type="checkbox"
+			id="5+"
+			name="5+"
+			if slices.Contains(checked, "5+") {
+				checked
+			}
+		/>
+	</li>
+}
+
+templ content(content []models.PostPreview) {
+	for _, p := range content {
+		<div class="data__wrapper">
+			<div>
+				{ p.Header }
+			</div>
+			<div>
+				{ fmt.Sprintf("%s %s %d$", p.Rooms, p.Type, p.Price) }
+			</div>
+		</div>
+	}
+}
+
+templ prevBtn(show bool) {
+	if show {
+		<div class="paginationBtn prevPageBtn">
+			<button id="prevPageBtn" onclick="prevPage()" form="filter">Previous Page</button>
+		</div>
+	}
+}
+
+templ nextBtn(show bool) {
+	if show {
+		<div class="paginationBtn nextPageBtn">
+			<button id="nextPageBtn" onclick="nextPage()" form="filter">Next Page</button>
+		</div>
+	}
+}

@@ -15,7 +15,7 @@ type REstate struct {
 	Name        string
 	Phone       string
 	Price       int64
-	Type        uint
+	Type        string
 	Rooms       string
 	CreatorId   uint
 }
@@ -35,15 +35,15 @@ type Types struct {
 type PostPreview struct {
 	Header string
 	Price  int64
-	Type   uint
+	Type   string
 	Rooms  string
 }
 
 func (r REstate) Validate() bool {
 	// Phone       string
-	ok, err := regexp.Match(`\+375\(00\)000-00-00`, []byte(r.Phone))
+	ok, err := regexp.Match(`^\+[1-9]\d{1,14}$`, []byte(r.Phone))
 	if !ok {
-		logging.Info("user entered illegal phone number")
+		logging.Info("user entered illegal phone number: %s", r.Phone)
 		return false
 	}
 	if err != nil {

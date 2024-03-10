@@ -2,12 +2,15 @@
 (+)post creation
     -(+) post validation
 all post view page(pagination + filtration + sorting)
+
+login:
+    - store in cookies
+    - on server store in hash map (mark that we could use redis)
+    - add to database 'is_admin' field
+    - remove login and password requirement when creating a post
+
 single post view page
 post edit popup
-store login in cookies
-
-
-no login i dont have time for this
 
 when creating u will be required to enter mail and password
 when deleting u will be required to enter mail and password

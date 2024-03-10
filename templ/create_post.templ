@@ -1,98 +1,97 @@
 package temp
 
 import (
-  "fmt" 
-  "github.com/m8-XD/real_estate_selling_website/db/repository"
-  "github.com/m8-XD/real_estate_selling_website/db/models"
+	"fmt"
+	"github.com/m8-XD/real_estate_selling_website/db/repository"
+	"github.com/m8-XD/real_estate_selling_website/db/models"
 	"strings"
 )
 
 templ ValidatePostCreation(data models.REstate, mail string, ok bool) {
-<form class="cf" hx-post="/api/v1/post/create" hx-swap="outerHTML">
-if !ok {
-  <div class="error">
-    Wrong email or password!
-  </div>
-}
-  <div class="half left cf">
-    <input type="text" id="header" name="header" placeholder="Header" value={ data.Header } required/>
-    <input type="text" id="name" name="name" placeholder="Name" value={ data.Name } required/>
-    <input type="tel" id="phone" name="phone" placeholder="Phone" value={ data.Phone } required/>
-    <input type="number" id="price" name="price" placeholder="Price" min="0" value={ fmt.Sprint(data.Price) } required/>
-    <select name="type" id="type">
-    @HouseTypes(data.Rooms)
-    </select>
-    <select name="rooms" id="rooms" value={ data.Rooms }>
-    <!-- I know i could make it as a method as in housetypes and not hard code it and bla bla bla, but sorry time is limited -->
-      <option value="1">1</option>
-      <option value="2">2</option>
-      <option value="3">3</option>
-      <option value="4">4</option>
-      <option value="5+">5+</option>
-    </select>
-    <input type="email" id="email" name="email" placeholder="Email address" value={ mail } required/>
-    <input type="password" id="pass" name="pass" placeholder="Password" required/>
-  </div>
-  <div class="half right cf">
-    <textarea name="desc" id="input-message" placeholder="Message" value={ data.Description }></textarea>
-  </div>  
-  <input type="submit" value="Submit" id="input-submit"/>
-</form>
-<script>
+	<form class="cf" hx-post="/api/v1/post/create" hx-swap="outerHTML">
+		if !ok {
+			<div class="error">
+				Wrong email or password!
+			</div>
+		}
+		<div class="half left cf">
+			<input type="text" id="header" name="header" placeholder="Header" value={ data.Header } required/>
+			<input type="text" id="name" name="name" placeholder="Name" value={ data.Name } required/>
+			<input type="tel" id="phone" name="phone" placeholder="Phone" value={ data.Phone } required/>
+			<input type="number" id="price" name="price" placeholder="Price" min="0" value={ fmt.Sprint(data.Price) } required/>
+			<select name="type" id="type">
+				@HouseTypes(data.Rooms)
+			</select>
+			<select name="rooms" id="rooms" value={ data.Rooms }>
+				<!-- I know i could make it as a method as in housetypes and not hard code it and bla bla bla, but sorry time is limited -->
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="5+">5+</option>
+			</select>
+			<input type="email" id="email" name="email" placeholder="Email address" value={ mail } required/>
+			<input type="password" id="pass" name="pass" placeholder="Password" required/>
+		</div>
+		<div class="half right cf">
+			<textarea name="desc" id="input-message" placeholder="Message">{ data.Description }</textarea>
+		</div>
+		<input type="submit" value="Submit" id="input-submit"/>
+	</form>
+	<script>
   maskPhone();
 </script>
-
 }
 
 templ PostCreationForm() {
-<form class="cf" hx-post="/api/v1/post/create" hx-swap="outerHTML">
-  <div class="half left cf">
-    <input type="text" id="header" name="header" placeholder="Header" required/>
-    <input type="text" id="name" name="name" placeholder="Name" required/>
-    <input type="tel" id="phone" name="phone" placeholder="Phone" required/>
-    <input type="number" id="price" name="price" placeholder="Price" min="0" required/>
-    <select name="type" id="type">
-    @HouseTypes("1")
-    </select>
-    <select name="rooms" id="rooms">
-      <option value="1">1</option>
-      <option value="2">2</option>
-      <option value="3">3</option>
-      <option value="4">4</option>
-      <option value="5+">5+</option>
-    </select>
-    <input type="email" id="email" name="email" placeholder="Email address" required/>
-    <input type="password" id="pass" name="pass" placeholder="Password" required/>
-  </div>
-  <div class="half right cf">
-    <textarea name="desc" id="input-message" placeholder="Message"></textarea>
-  </div>  
-  <input type="submit" value="Submit" id="input-submit"/>
-</form>
-<script>
+	<form class="cf" hx-post="/api/v1/post/create" hx-swap="outerHTML">
+		<div class="half left cf">
+			<input type="text" id="header" name="header" placeholder="Header" required/>
+			<input type="text" id="name" name="name" placeholder="Name" required/>
+			<input type="tel" id="phone" name="phone" placeholder="Phone" required/>
+			<input type="number" id="price" name="price" placeholder="Price" min="0" required/>
+			<select name="type" id="type">
+				@HouseTypes("1")
+			</select>
+			<select name="rooms" id="rooms">
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="5+">5+</option>
+			</select>
+			<input type="email" id="email" name="email" placeholder="Email address" required/>
+			<input type="password" id="pass" name="pass" placeholder="Password" required/>
+		</div>
+		<div class="half right cf">
+			<textarea name="desc" id="input-message" placeholder="Message"></textarea>
+		</div>
+		<input type="submit" value="Submit" id="input-submit"/>
+	</form>
+	<script>
   maskPhone();
 </script>
 }
 
 templ HouseTypes(selected string) {
-  for _, item := range repository.HouseTypes() {
-    if strings.EqualFold(item, selected){
-      <option value={ item } selected>{ item }</option>
-    } else {
-      <option value={ item }>{ item }</option>
-    }
-  }
+	for _, item := range repository.HouseTypes() {
+		if strings.EqualFold(item, selected) {
+			<option value={ item } selected>{ item }</option>
+		} else {
+			<option value={ item }>{ item }</option>
+		}
+	}
 }
 
 templ RoomsSelect(selected string) {
-  for item:= 1; item < 5; item++ {
-    if strings.EqualFold(selected, fmt.Sprint(item)) { 
-      <option value={ fmt.Sprint(item) } selected>{ fmt.Sprint(item) }</option>
-    } else {
-      <option value={ fmt.Sprint(item) }>{ fmt.Sprint(item) }</option>
-    }
-  }
-  if strings.EqualFold("5+", selected) {
-    <option value="5+" selected>5+</option>
-  }
+	for item:= 1; item < 5; item++ {
+		if strings.EqualFold(selected, fmt.Sprint(item)) {
+			<option value={ fmt.Sprint(item) } selected>{ fmt.Sprint(item) }</option>
+		} else {
+			<option value={ fmt.Sprint(item) }>{ fmt.Sprint(item) }</option>
+		}
+	}
+	if strings.EqualFold("5+", selected) {
+		<option value="5+" selected>5+</option>
+	}
 }

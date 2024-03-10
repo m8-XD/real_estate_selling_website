@@ -44,6 +44,7 @@ func main() {
 		http.ServeFile(rw, r, "./static/post/all.html")
 	})
 
+	mux.HandleFunc("GET /api/v1/post/all", api.AllPosts)
 	mux.HandleFunc("POST /api/v1/user/email", api.ValidateEmail)
 	// mux.HandleFunc("POST /api/v1/user/delete/{id}")
 	// mux.HandleFunc("POST /api/v1/user/edit/{id}")

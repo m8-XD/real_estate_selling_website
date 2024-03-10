@@ -15,7 +15,12 @@ const (
 )
 
 func CreatePost(post *models.REstate) (uint, error) {
-	return 0, nil
+	db := db.Get()
+	err := db.Table("post").Create(post).Error
+	if err != nil {
+		return 0, err
+	}
+	return post.ID, nil
 }
 
 func HouseTypes() []string {
@@ -29,11 +34,11 @@ func HouseTypes() []string {
 	return types
 }
 
-func HouseTypeId(t string) uint {
+func HouseTypeId(t string) string {
 	db := db.Get()
 	var id uint
-	db.Table("types").Select("name = ?", t).First(&id)
-	return id
+	db.Table("types").Select("id").Where("name = ?", t).First(&id)
+	return fmt.Sprint(id)
 }
 
 func AllPostsByFilter(filter map[string][]string, sortBy string, page int) []models.PostPreview {
@@ -43,13 +48,21 @@ func AllPostsByFilter(filter map[string][]string, sortBy string, page int) []mod
 		logging.Info("someone passed illegal values to a filter, returning default filter")
 		filter = make(map[string][]string, 0)
 	}
-	query := db.Table("post").Select("header", "price", "type", "rooms").Session(&gorm.Session{})
+
+	query := db.Table("post").Session(&gorm.Session{}).Select("post.header", "post.price", "types.name", "post.rooms")
 	populateConditionQuery(query, filter)
+
 	query.Order(sortBy)
 	query.Offset((page - 1) * pageSize)
 	query.Limit(pageSize)
+	query.Joins("JOIN types ON post.type = types.id")
+
 	var posts []models.PostPreview
-	query.Find(&posts)
+
+	query.Scan(&posts)
+
+	logging.Info("fetching posts for main page")
+	logging.Info("%v", posts)
 
 	return posts
 }

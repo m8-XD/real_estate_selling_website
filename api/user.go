@@ -54,5 +54,4 @@ func CreateUser(rw http.ResponseWriter, r *http.Request) {
 	}
 	logging.Ok("new user has been created")
 	rw.Header().Add("HX-Redirect", "/")
-
 }

@@ -1,0 +1,143 @@
+package temp
+
+import (
+	"fmt"
+	"github.com/m8-XD/real_estate_selling_website/db/repository"
+	"github.com/m8-XD/real_estate_selling_website/db/models"
+	"slices"
+)
+
+templ AllPosts(c []models.PostPreview, checked []string, hasNextPage bool, hasPrevPage bool) {
+	<div class="main" hx-target="this" hx-swap="outerHTML">
+		<div class="top-bar">
+			<div class="form-container">
+				<form id="filter" hx-get="/api/v1/post/all" hx-vals="js:{page: getPage()}">
+					<details class="htype">
+						<summary>House type</summary>
+						<fieldset>
+							<legend>House Type</legend>
+							<ul>
+								@houseTypes(checked)
+							</ul>
+						</fieldset>
+					</details>
+					<details class="roomq">
+						<summary>Room quantity</summary>
+						<fieldset>
+							<legend>Room quantity</legend>
+							<ul>
+								@roomQuantity(checked)
+							</ul>
+						</fieldset>
+					</details>
+					<div>
+						<label for="order">Sort:</label>
+						<select name="order">
+							<option
+								name="priceDESC"
+								value="priceDESC"
+								if slices.Contains(checked, "priceDESC") {
+									selected
+								}
+							>Highest price</option>
+							<option
+								name="priceASC"
+								value="priceASC"
+								if slices.Contains(checked, "priceASC") {
+									selected
+								}
+							>Lowest price</option>
+							<option
+								name="recent"
+								value="recent"
+								if slices.Contains(checked, "recent") {
+									selected
+								}
+							>Most recent</option>
+						</select>
+					</div>
+					<button>Find</button>
+				</form>
+			</div>
+		</div>
+		<div class="content">
+			@content(c)
+		</div>
+		<div class="footer">
+			@prevBtn(false)
+			@nextBtn(true)
+		</div>
+	</div>
+}
+
+templ houseTypes(checked []string) {
+	for _, hType := range repository.HouseTypes() {
+		<li>
+			<label for={ hType }>{ hType }</label>
+			<input
+				type="checkbox"
+				id={ hType }
+				name={ hType }
+				if slices.Contains(checked, hType) {
+					checked
+				}
+			/>
+		</li>
+	}
+}
+
+templ roomQuantity(checked []string) {
+	for i := 1; i <= 4; i++ {
+		<li>
+			<label for={ fmt.Sprint(i) }>{ fmt.Sprint(i) }</label>
+			<input
+				type="checkbox"
+				id={ fmt.Sprint(i) }
+				name={ fmt.Sprint(i) }
+				if slices.Contains(checked, fmt.Sprint(i)) {
+					checked
+				}
+			/>
+		</li>
+	}
+	<li>
+		<label for="5+">5+</label>
+		<input
+			type="checkbox"
+			id="5+"
+			name="5+"
+			if slices.Contains(checked, "5+") {
+				checked
+			}
+		/>
+	</li>
+}
+
+templ content(content []models.PostPreview) {
+	for _, p := range content {
+		<div>
+			<div>
+				{ p.Header }
+			</div>
+			<div>
+				{ fmt.Sprintf("%s %s %d$", p.Rooms, p.Type, p.Price) }
+			</div>
+		</div>
+	}
+}
+
+templ prevBtn(show bool) {
+	if show {
+		<div class="paginationBtn">
+			<button id="prevPageBtn" class="prevPageBtn" onclick="prevPage()" form="filter">Previous Page</button>
+		</div>
+	}
+}
+
+templ nextBtn(show bool) {
+	if show {
+		<div class="paginationBtn">
+			<button id="nextPageBtn" class="nextPageBtn" onclick="nextPage()" form="filter">Next Page</button>
+		</div>
+	}
+}

@@ -71,11 +71,14 @@ func CreatePost(w http.ResponseWriter, r *http.Request) {
 		logging.Error("there was an error creating the post")
 		logging.Error(err.Error())
 		w.Header().Add("HX-Redirect", "/error?code=5xx")
+		return
 	}
 	logging.Info("creating post %v", post)
 	w.Header().Add("HX-Redirect", fmt.Sprintf("/post/%d", postId))
 }
 
 func AllPosts(w http.ResponseWriter, r *http.Request) {
-	panic("sdasdfasfasdf")
+	logging.Info("%v", r.URL.Query())
+	posts := repository.AllPostsByFilter(map[string][]string{"type": {repository.HouseTypeId("flat")}}, "updated_at", 1)
+	templ.Handler(temp.AllPosts(posts, []string{"1", "2", "5+", "Other", "recent"}, true, true)).ServeHTTP(w, r)
 }
