@@ -33,6 +33,7 @@ type Types struct {
 }
 
 type PostPreview struct {
+	Id     uint
 	Header string
 	Price  int64
 	Type   string

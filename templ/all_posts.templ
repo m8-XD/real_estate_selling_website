@@ -148,10 +148,10 @@ templ content(content []models.PostPreview) {
 	for _, p := range content {
 		<div class="data__wrapper">
 			<div>
-				{ p.Header }
+				<a class="link" href={ templ.URL(fmt.Sprintf("/post/%d", p.Id)) }>{ p.Header }</a>
 			</div>
 			<div>
-				{ fmt.Sprintf("%s %s %d$", p.Rooms, p.Type, p.Price) }
+				{ fmt.Sprintf("%s room(s), %s, %d$", p.Rooms, p.Type, p.Price) }
 			</div>
 		</div>
 	}

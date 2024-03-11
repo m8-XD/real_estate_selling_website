@@ -29,7 +29,6 @@
             width: 700px;
             margin: 30px auto;
             position: relative;
-            z-index: -1;
         }
 
         .top-bar {
@@ -191,6 +190,8 @@
             display: flex;
             justify-content: space-between;
             padding: 0 200px;
+            position: relative;
+            z-index: 10;
         }
 
         .word-sort {
@@ -226,6 +227,18 @@
   var getPage = function() {
       return page;
   }
+  // async function() {
+  //   link = document.getElementsByClassName("link")
+  //   for (let i = 0; i < link.length, i++) {
+  //       link[i].addEventListener('mouseover', function() {
+  //           this.style.zIndex = '1000'; 
+  //       });
+  //
+  //       link[i].addEventListener('mouseout', function() {
+  //           this.style.zIndex = 'auto'; 
+  //       });
+  //   }
+  // }()
 </script>
 </head>
 <body>

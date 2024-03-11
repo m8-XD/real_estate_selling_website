@@ -11,7 +11,7 @@ import (
 )
 
 const (
-	pageSize int = 5
+	PageSize int = 5
 )
 
 func CreatePost(post *models.REstate) (uint, error) {
@@ -34,11 +34,11 @@ func HouseTypes() []string {
 	return types
 }
 
-func HouseTypeId(t string) string {
+func HouseTypeId(st string) string {
 	db := db.Get()
-	var id uint
-	db.Table("types").Select("id").Where("name = ?", t).First(&id)
-	return fmt.Sprint(id)
+	var t models.Types
+	db.Table("types").Where("name = ?", st).First(&t)
+	return fmt.Sprint(t.ID)
 }
 
 func AllPostsByFilter(filter map[string][]string, sortBy string, page int) []models.PostPreview {
@@ -49,12 +49,12 @@ func AllPostsByFilter(filter map[string][]string, sortBy string, page int) []mod
 		filter = make(map[string][]string, 0)
 	}
 
-	query := db.Table("post").Session(&gorm.Session{}).Select("post.header", "post.price", "types.name", "post.rooms")
+	query := db.Table("post").Session(&gorm.Session{}).Select("post.id", "post.header", "post.price", "types.name AS type", "post.rooms")
 	populateConditionQuery(query, filter)
 
-	query.Order(sortBy)
-	query.Offset((page - 1) * pageSize)
-	query.Limit(pageSize)
+	query.Order("post." + sortBy)
+	query.Offset((page - 1) * PageSize)
+	query.Limit(PageSize + 1)
 	query.Joins("JOIN types ON post.type = types.id")
 
 	var posts []models.PostPreview

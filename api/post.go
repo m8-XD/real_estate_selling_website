@@ -78,7 +78,25 @@ func CreatePost(w http.ResponseWriter, r *http.Request) {
 }
 
 func AllPosts(w http.ResponseWriter, r *http.Request) {
-	logging.Info("%v", r.URL.Query())
-	posts := repository.AllPostsByFilter(map[string][]string{"type": {repository.HouseTypeId("flat")}}, "updated_at", 1)
-	templ.Handler(temp.AllPosts(posts, []string{"1", "2", "5+", "Other", "recent"}, true, true)).ServeHTTP(w, r)
+	//map[1:[on] 2:[on] 5+:[on] Cottage:[on] Flat:[on] order:[recent] page:[1]]
+	var err error
+
+	q := r.URL.Query()
+	var page int64
+
+	if q.Has("page") {
+		page, err = strconv.ParseInt(q.Get("page"), 10, 64)
+	} else {
+		page = 1
+	}
+	if err != nil {
+		w.Header().Add("HX-Redirect", "/error?code=404")
+	}
+
+	posts := repository.AllPostsByFilter(map[string][]string{"type": {repository.HouseTypeId("Flat")}}, "updated_at", 1)
+
+	hasNext := len(posts) == repository.PageSize
+	hasPrev := page > 1
+
+	templ.Handler(temp.AllPosts(posts, []string{"1", "2", "5+", "Other", "recent"}, hasNext, hasPrev)).ServeHTTP(w, r)
 }
